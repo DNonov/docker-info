@@ -51,3 +51,75 @@ Output:
 ~~~ bash
 sh
 ~~~
+
+### What is behind run command and docker essential commands
+
+There is two steps process behind it. Whenever **Docker run** command is used,
+actually docker run two sequential commands behind the scenes.
+
+~~~ bash
+docker create <image-name>
+~~~
+
+and 
+
+~~~ bash
+docker start -a <container-id>
+~~~
+
+The first command creates a container out of an image, and the second just starts the
+container.
+
+The **-a** flag in the former command just attaches to the **STDOUT/STDERR**  of the container
+and forwards signals. By default **docker start** passes the container's id to the **STDOUT**.
+
+In order to obtain more information about the containers you can run two commands:
+
+~~~ bash
+docker ps
+~~~
+
+To list all currently running containers and
+
+~~~ bash
+docker ps --all
+~~~
+
+to list all containers that have ever been created.
+
+To stop running containers you can use:
+
+~~~ bash
+docker stop <container-id>
+~~~
+
+or 
+
+~~~ bash
+docker kill <container-id>
+~~~
+
+The first command just sends **SIGTERM** signal to the main process of the container
+and the second sends **SIGKILL** signal. If the main process in the container is still alive
+ten seconds after the **SIGTERM** have been sent, docker is going to send **SIGKILL**.
+
+
+If you want to restart container you can just simply run:
+
+~~~ bash
+docker start -a <container-id>
+~~~
+
+or if you want to delete all containers that has been stopped and are no longer needed:
+
+~~~ bash
+docker system prune
+~~~
+
+Another essential command is:
+
+~~~ bash
+docker log <container-id>
+~~~
+
+Which gives you all the information that has been passed to the **STDOUT** of the container.
