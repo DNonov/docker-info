@@ -139,3 +139,20 @@ docker exec -it <container-id> sh
 The difference between the above and **docker run** is **docker exec** won't replace
 the main process of the container, it will just initiate new process in parallel to 
 the main process.
+
+### How to create a docker image
+
+The docker client will look for Dockerfile and will send it to the docker server and we
+will fetch the image from there.
+
+To build an image just use:
+
+~~~ bash
+docker build <path-to-the-Dockerfile>
+~~~
+
+After that we can use the fetched image id and use:
+
+~~~ bash
+docker run <image-id>
+~~~
