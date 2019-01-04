@@ -75,5 +75,50 @@ active and running:
 Installing Docker now gives you not just the Docker service(daemon) but also
 the docker command line utility, or the Docker client.
 
+## Executing Docker without sudo prefix
+
+By default, running the **docker** command requires root privileges - that is,
+you have to prefix your docker command with sudo. It can also be run by a user 
+in the **docker** group, which is automatically created during the installation
+of Docker. If you attempt to run the Docker command without prefixing it with
+**sudo** or without being in the docker group, you will get an output like
+this:
+
+
+``` bash
+docker: Got permission denied while trying to connect to the Docker daemon socket at 
+unix:///var/run/docker.sock: Post http://%2Fvar%2Frun%2Fdocker.sock/v1.39/containers/create: 
+dial unix /var/run/docker.sock: connect: permission denied.
+See 'docker run --help'.
+```
+
+If you want to avoid typing sudo whenever you run docker command, add your
+username to the **docker** group:
+
+``` bash
+sudo usermod -aG docker <user>
+```
+
+To apply the new group membership, you can log out of the server and back in,
+or you can type the following:
+
+``` bash
+su - <user>
+```
+
+You will be prompted to enter your user's password to continue. Afterwards,
+you can confirm that your user is now added to the docker group by typing:
+
+``` bash
+id -nG
+```
+
+If you need to add a user to the **docker** group that you're not logged in
+as, declare that username explicitly using:
+
+``` bash
+sudo usermod -aG docker <username>
+```
+
 [The original guide by Digital Ocean](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-16-04)
 
