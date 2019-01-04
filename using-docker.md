@@ -15,7 +15,7 @@ Every container has FS snapshot and Startup Command.
 We can pass a different startup command to the container as simply as:
 
 ~~~ bash
-docker run busybox echo hello world
+docker run <image-name> echo hello world
 ~~~
 
 The result will be:
@@ -28,7 +28,7 @@ You can even check what's inside the container yourself. Just pass **sh** unix
 program to the **STDIN** of the container as follow:
 
 ~~~ bash
-docker run -it busybox sh
+docker run -it <image-name> sh
 ~~~
 
 **-i** and **-t** flags have to be present to keep **STDIN** open and
@@ -41,18 +41,14 @@ ls
 ~~~
 Output:
 ~~~ bash
-bin   dev   etc   home  proc  root  sys   tmp   usr   var
-~~~
-~~~ bash
-cd bin
-ls | grep sh
-~~~
-Output:
-~~~ bash
-sh
+bin dev etc home proc root sys tmp usr var
 ~~~
 
-### What is behind run command and docker essential commands
+Whatever command you pass to the **STDIN** have to be executable in the container.
+All programs from the examples above can be found in any UNIX OS, however your container
+have to have access to the same executables that you pass.
+
+### What is behind run command and some docker essential commands
 
 There is two steps process behind it. Whenever **Docker run** command is used,
 actually docker run two sequential commands behind the scenes.
@@ -123,3 +119,23 @@ docker log <container-id>
 ~~~
 
 Which gives you all the information that has been passed to the **STDOUT** of the container.
+
+### How to run additional process in a docker container
+
+It is as simple as:
+
+~~~ bash
+docker exec -it <container-id> <command>
+~~~
+
+and yes **-it** flag shorthand does the same thing as it does on **docker run** command.
+
+This is the best way to obtain a terminal session in your container:
+
+~~~ bash
+docker exec -it <container-id> sh
+~~~
+
+The difference between the above and **docker run** is **docker exec** won't replace
+the main process of the container, it will just initiate new process in parallel to 
+the main process.
