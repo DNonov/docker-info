@@ -196,7 +196,7 @@ RUN apk add --update redis
 CMD ["redis-server"]
 ~~~
 
-On every step docker will create an intermediate images that will be cahed. 
+On every step docker creates an intermediate images that will be cached. 
 
 If we update the Dockerfile:
 
