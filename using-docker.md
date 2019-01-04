@@ -151,8 +151,64 @@ To build an image just use:
 docker build <path-to-the-Dockerfile>
 ~~~
 
-After that we can use the fetched image id and use:
+You can find example of a Dockerfile at **/docker-file/Dockerfile**.
+
+After that we can use the fetched image name and use:
 
 ~~~ bash
-docker run <image-id>
+docker run <image-name>
 ~~~
+
+Because the name of the image is going to be a hash, and is always hard to remember
+hashes. We can tag a docker image:
+
+~~~ bash
+docker build -t <tag-of-the-image> <path-to-the-Dockerfile>
+~~~
+
+There is convention of tags in the docker comunity and it goes as:
+
+> dockerid / name : version
+
+So for example:
+
+~~~ bash
+docker build -t dnonov/myimage:latest .
+~~~
+
+and you can run it by:
+
+~~~ bash
+docker run dnonov/myimage
+~~~
+
+By default will give you the latest version.
+
+### The caching process while building an image
+
+Having the following Dockerfile:
+
+~~~ Dockerfile
+FROM alpine
+
+RUN apk add --update redis
+
+CMD ["redis-server"]
+~~~
+
+On every step docker will create an intermediate images that will be cahed. 
+
+If we update the Dockerfile:
+
+~~~ Dockerfile
+FROM alpine
+
+RUN apk add --update redis
+
+RUN apk add --update gcc
+
+CMD ["redis-server"]
+~~~
+
+Now it will download only **gcc** because we have cached intermediate image from the last
+build on the step above and will use it as base image.
